@@ -1,0 +1,136 @@
+plugins {
+	//id 'net.saliman.cobertura' version '2.5.4'
+	//id 'org.unbroken-dome.test-sets' version '1.5.0'
+	id 'org.springframework.boot' version '2.0.3.RELEASE'
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'eclipse'
+//apply plugin: 'checkstyle'
+//apply plugin: 'org.unbroken-dome.test-sets'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+archivesBaseName = 'metadata'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+[compileJava, javadoc, compileTestJava]*.options*.encoding = 'UTF-8'
+
+applicationName = "${archivesBaseName}"
+mainClassName = 'org.joe.Application'
+
+jar {
+	enabled = true
+}
+
+repositories {
+	maven {
+		url 'https://artifact.aspose.com/repo/'
+	}
+	mavenCentral()
+}
+
+configurations {
+	testCompile.extendsFrom compileOnly
+	compile.exclude module: 'spring-boot-starter-tomcat'
+	compile.exclude module: 'spring-boot-starter-logging'
+	compile.exclude module: 'websocket-server'
+	compile.exclude module: 'javax-websocket-server-impl'
+}
+
+dependencies {
+    //compile group: 'org.apache.poi', name: 'poi', version: '4.1.0'
+    //compile group: 'org.apache.poi', name: 'poi-ooxml', version: '4.1.0'
+    //compile group: 'org.apache.poi', name: 'ooxml-schemas', version: '1.4'
+	compile (
+		// spring
+		'org.springframework.boot:spring-boot-starter-web:2.0.3.RELEASE',
+		'org.springframework.boot:spring-boot-starter-jetty:2.0.3.RELEASE',
+		// aop
+		'org.springframework.boot:spring-boot-starter-aop:2.0.3.RELEASE',
+		// database
+		//'com.zaxxer:HikariCP:3.2.0',
+		//'org.springframework:spring-jdbc:5.0.7.RELEASE',
+		//'mysql:mysql-connector-java:8.0.11',
+		// logger
+		'org.springframework.boot:spring-boot-starter-log4j2:2.0.3.RELEASE',
+		'com.lmax:disruptor:3.4.2',
+		// cache
+		'org.springframework.boot:spring-boot-starter-cache:2.0.3.RELEASE',
+		'org.redisson:redisson:3.7.5',
+		'com.github.ben-manes.caffeine:caffeine:2.6.2',
+		// phone numbers
+		'com.googlecode.libphonenumber:libphonenumber:8.9.9',
+		// monitor
+		'net.bull.javamelody:javamelody-spring-boot-starter:1.73.1',
+		// swagger 
+		//'io.springfox:springfox-swagger2:2.9.2',
+		//'io.springfox:springfox-swagger-ui:2.9.2',
+		//'io.swagger:swagger-jersey2-jaxrs:1.5.8',
+		// local repo
+		//'com.aspose:aspose-cells:17.12',
+		//'com.aspose:aspose-pdf:17.12',
+		//'com.aspose:aspose-words:17.12:jdk16',
+		//'com.aspose:aspose-slides:17.12.1:jdk16',
+		//'com.itextpdf:itextpdf:5.5.13',
+		//'commons-io:commons-io:2.6',
+		//utils -json
+		'org.codehaus.jackson:jackson-mapper-asl:1.9.0',
+		// htmlcompressor
+		'com.googlecode.htmlcompressor:htmlcompressor:1.5.2',
+		// others
+		'com.squareup.okhttp3:okhttp:3.10.0'
+	)
+	//compileOnly ()
+		//'javax.servlet:servlet-api:3.1.0'
+	//)
+	testCompile (
+		'junit:junit:4.12',
+		// mock for unit test
+		'org.mockito:mockito-all:1.10.19',
+		'org.powermock:powermock-module-junit4:1.7.4',
+		'org.powermock:powermock-api-mockito:1.7.4',
+		// integration test
+		'org.springframework.boot:spring-boot-starter-test:2.0.3.RELEASE'
+	)
+}
+
+eclipse {
+	jdt {
+		if(file('.settings').exists()){
+		   File ef = file('.settings/org.eclipse.core.resources.prefs')
+		   ef.write('eclipse.preferences.version=1\nencoding/<project>=UTF-8')
+           File lf =  file('.settings/org.eclipse.core.runtime.prefs')
+		   lf.write('eclipse.preferences.version=1\nline.separator=\\n')			   
+		}
+	}
+}
+
+task wrapper(type: Wrapper){
+  gradleVersion = '3.5.1'
+}
+
+applicationDistribution.from('config') {
+	into 'config'
+}
+applicationDistribution.from('tools') {
+	into 'tools'
+}
+applicationDistribution.from('public') {
+	into 'public'
+}
+applicationDistribution.from(['run.sh', 'Dockerfile']) {
+	into ''
+}
+applicationDistribution.from('migration_script') {
+	into 'migration_script'
+}
+
+tasks.withType(Test) {
+	ignoreFailures = true
+}
+
+tasks.withType(Tar){
+	compression = Compression.GZIP
+}

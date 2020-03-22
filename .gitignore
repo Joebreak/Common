@@ -1,0 +1,9 @@
+/build/
+/bin/
+/logs/
+/.settings/
+.settings
+.classpath
+.project
+*.lock
+*.bin
