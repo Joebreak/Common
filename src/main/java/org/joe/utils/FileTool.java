@@ -14,7 +14,21 @@ import java.util.List;
 public class FileTool {
 
     public static String getFileExtension(String name) {
+        if (StringTool.isNullOrEmpty(name)) {
+            return "";
+        }
         return name.substring(name.lastIndexOf(".") + 1);
+    }
+
+    public static String getBaseFileName(String name) {
+        if (StringTool.isNullOrEmpty(name)) {
+            return "";
+        }
+        int lastIndex = name.lastIndexOf(".");
+        if (lastIndex < 0) {
+            lastIndex = name.length();
+        }
+        return name.substring(name.lastIndexOf("\\") + 1, lastIndex);
     }
 
     public static String getParentPath(String name) {
@@ -24,7 +38,7 @@ public class FileTool {
     private boolean isPathExists(Path path) {
         return Files.exists(path);
     }
-    
+
     private void creadFile(Path path) {
         try {
             Files.createDirectories(path.getParent());
@@ -65,4 +79,5 @@ public class FileTool {
         }
         return contents;
     }
+
 }
