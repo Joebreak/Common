@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.joe.factory.DAOObject;
-import org.joe.utils.StringTool;
 
 class DAOFileImpl implements DAOObject {
 
@@ -24,16 +23,12 @@ class DAOFileImpl implements DAOObject {
     private final String rootPath;
 
     public DAOFileImpl() {
-        this("");
+        this(Paths.get(System.getProperty("user.dir")).getRoot().toString());
     }
 
     public DAOFileImpl(String rootPath) {
-        if (StringTool.isNullOrEmpty(rootPath)) {
-            this.rootPath = Paths.get(System.getProperty("user.dir")).getRoot().toString();
-        } else {
-            this.rootPath = rootPath;
-        }
-        path = Paths.get(this.rootPath, "db", "sys.oob");
+        this.rootPath = rootPath;
+        this.path = Paths.get(rootPath, "db", "sys.oob");
     }
 
     @Override
@@ -53,6 +48,22 @@ class DAOFileImpl implements DAOObject {
         list = getAll();
         list.remove(index);
         save(list);
+    }
+
+    private void save(List<Object> list) {
+        if (Files.notExists(path)) {
+            creadFile();
+        }
+        try (FileOutputStream fos = new FileOutputStream(path.toFile());
+                ObjectOutputStream oos = new ObjectOutputStream(fos);) {
+            for (Object cb : list) {
+                oos.writeObject(cb);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -90,22 +101,6 @@ class DAOFileImpl implements DAOObject {
         try (FileOutputStream fos = new FileOutputStream(path.toFile());
                 ObjectOutputStream oos = new ObjectOutputStream(fos);) {
             oos.writeObject(list);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void save(List<Object> list) {
-        if (Files.notExists(path)) {
-            creadFile();
-        }
-        try (FileOutputStream fos = new FileOutputStream(path.toFile());
-                ObjectOutputStream oos = new ObjectOutputStream(fos);) {
-            for (Object cb : list) {
-                oos.writeObject(cb);
-            }
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
