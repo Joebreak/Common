@@ -65,6 +65,11 @@ public class VideoTool {
     }
 
     public static void main(String[] args) {
+//        youtube-dl.exe --abort-on-error --restrict-filenames -o out/%(title)s.%(ext)s {{youtubeUrl}}
+//
+//
+//        youtube-dl -x --audio-format mp3 -o out/%(title)s.%(ext)s https://www.youtube.com/watch?v=XxqNL7mw1xk
+
         mergeVideo(Arrays.asList(Paths.get("E:\\joe\\movid\\2.mp4"), Paths.get("E:\\joe\\movid\\1.mp4")));
     }
 }
