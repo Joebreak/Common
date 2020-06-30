@@ -4,41 +4,46 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
 public class VideoTool {
 
-    public static void spileVideo(String source, String out) {
-        if (!Files.exists(Paths.get(source))) {
+    public static void spileVideo(Path source, Path out) {
+        if (!Files.exists(source)) {
             return;
         }
         CommandTools.execute(String.format("ffmpeg -i %s -y -vcodec copy -an %s", source, out));
     }
 
-    public static void spileVideo(String source) {
-        Path out = Paths.get(FileTool.getParentPath(source), "outVideo." + FileTool.getFileExtension(source));
-        spileVideo(source, out.toString());
+    public static void spileVideo(Path source) {
+        Path out = Paths.get(source.getParent().toString(), "outVideo." + FileTool.getFileExtension(source.toString()));
+        spileVideo(source, out);
     }
 
-    public static void spileAudio(String source, String out) {
-        if (!Files.exists(Paths.get(source))) {
+    public static void spileAudio(Path source, Path out) {
+        if (!Files.exists(source)) {
             return;
         }
         CommandTools.execute(String.format("ffmpeg -i %s -y -acodec libmp3lame -vn %s", source, out));
     }
 
-    public static void spileAudio(String source) {
-        Path out = Paths.get(FileTool.getParentPath(source), "outAudio.mp3");
-        spileAudio(source, out.toString());
+    public static void spileAudio(Path source) {
+        Path out = Paths.get(source.getParent().toString(), "outAudio.mp3");
+        spileAudio(source, out);
     }
 
-    public static void mergeVideo(List<String> sources, String out) {
+    public static void mergeVideo(List<Path> sources, Path out) {
         int index = 0;
         List<String> fileNames = new ArrayList<>();
-        for (String source : sources) {
-            String name = FileTool.getBaseFileName(source).concat(String.valueOf(++index)).concat(".ts");
-            System.out.println(String.format("ffmpeg -i %s -c copy -bsf:v h264_mp4toannexb -f mpegts %s", source, name));
+        for (Path source : sources) {
+            if (!Files.exists(source)) {
+                continue;
+            }
+            String name = String.format("%s\\%s_%d%s", source.getParent(),
+                    FileTool.getBaseFileName(source.getName(source.getNameCount() - 1).toString()), ++index, ".ts");
+            CommandTools.execute(String.format("ffmpeg -i %s -y -c copy -bsf:v h264_mp4toannexb -f mpegts %s", source, name));
             fileNames.add(name);
         }
         StringBuilder sb = new StringBuilder();
@@ -48,12 +53,18 @@ public class VideoTool {
                 sb.append("|");
             }
         }
-        System.out.println(String.format("ffmpeg -i \"concat:%s\" %s", sb.toString(), out));
+        CommandTools.execute(String.format("ffmpeg -i  \"concat:%s\" -y %s", sb.toString(), out));
+    }
+    
+    public static void mergeVideo(List<Path> sources) {
+        if (CollectionTool.isNullOrEmpty(sources)) {
+            return;
+        }
+        Path out = Paths.get(sources.get(0).getParent().toString(), "out.mp4");
+        mergeVideo(sources, out);
     }
 
     public static void main(String[] args) {
-        Path path = Paths.get("E:\\joe\\movid\\2.mp4");
-        spileVideo(path.toString());
-        // VideoTool.mergeVideo(Arrays.asList("1.mp4", "2.mp4"), "aaa.mp4");
+        mergeVideo(Arrays.asList(Paths.get("E:\\joe\\movid\\2.mp4"), Paths.get("E:\\joe\\movid\\1.mp4")));
     }
 }
