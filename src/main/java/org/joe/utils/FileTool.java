@@ -13,26 +13,26 @@ import java.util.List;
 
 public class FileTool {
 
-    public static String getFileExtension(String name) {
-        if (StringTool.isNullOrEmpty(name)) {
+    public static String getFileExtension(String path) {
+        if (StringTool.isNullOrEmpty(path)) {
             return "";
         }
-        return name.substring(name.lastIndexOf(".") + 1);
+        return path.substring(path.lastIndexOf(".") + 1);
     }
 
-    public static String getBaseFileName(String name) {
-        if (StringTool.isNullOrEmpty(name)) {
+    public static String getBaseFileName(String path) {
+        if (StringTool.isNullOrEmpty(path)) {
             return "";
         }
-        int lastIndex = name.lastIndexOf(".");
+        int lastIndex = path.lastIndexOf(".");
         if (lastIndex < 0) {
-            lastIndex = name.length();
+            lastIndex = path.length();
         }
-        return name.substring(name.lastIndexOf("\\") + 1, lastIndex);
+        return path.substring(path.lastIndexOf("\\") + 1, lastIndex);
     }
 
-    public static String getParentPath(String name) {
-        return name.substring(0, name.lastIndexOf("\\") + 1);
+    public static String getParentPath(String path) {
+        return path.substring(0, path.lastIndexOf("\\") + 1);
     }
 
     private boolean isPathExists(Path path) {
