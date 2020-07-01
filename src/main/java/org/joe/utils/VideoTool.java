@@ -4,11 +4,26 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 public class VideoTool {
+
+    public static void showFormat(Path source) {
+        if (!Files.exists(source)) {
+            return;
+        }
+        CommandTools.execute(String.format("ffprobe -v quiet -print_format json -show_format -show_streams %s", source), true);
+    }
+
+    public static void convertToMp4(Path source) {
+        if (!Files.exists(source)) {
+            return;
+        }
+        Path out = Paths.get(source.getParent().toString(), "out.mp4");
+        CommandTools.execute(String.format("ffmpeg -i %s -y -vcodec libx264 -acodec aac %s", source, out));
+    }
 
     public static void spileVideo(Path source, Path out) {
         if (!Files.exists(source)) {
@@ -55,7 +70,7 @@ public class VideoTool {
         }
         CommandTools.execute(String.format("ffmpeg -i  \"concat:%s\" -y %s", sb.toString(), out));
     }
-    
+
     public static void mergeVideo(List<Path> sources) {
         if (CollectionTool.isNullOrEmpty(sources)) {
             return;
@@ -64,7 +79,21 @@ public class VideoTool {
         mergeVideo(sources, out);
     }
 
+    public static void spileVideo(Path source, String from, String total) {
+        if (!Files.exists(source) || StringTool.isNullOrEmpty(from) || StringTool.isNullOrEmpty(total)) {
+            return;
+        }
+        Path out = Paths.get(source.getParent().toString(), "out." + FileTool.getFileExtension(source.toString()));
+        CommandTools.execute(String.format("ffmpeg -i %s -y -ss %s -t %s %s", source, from, total, out));
+    }
+
+    public static void spileVideo(Path source, Date fromTime, Date totalTime) {
+        String from = DateTool.toFormat("HH:mm:ss.SSS", fromTime);
+        String total = DateTool.toFormat("HH:mm:ss.SSS", totalTime);
+        spileVideo(source, from, total);
+    }
+
     public static void main(String[] args) {
-        mergeVideo(Arrays.asList(Paths.get("E:\\joe\\movid\\2.mp4"), Paths.get("E:\\joe\\movid\\1.mp4")));
+        convertToMp4(Paths.get("E:\\joe\\movid\\VS.webm"));
     }
 }
