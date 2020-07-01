@@ -7,14 +7,17 @@ import org.joe.factory.impl.DAOFactory;
 
 public class Test {
 
-    public static void main(String[] args) {
-
+    public void daoTest() {
         DAOObject dBook = DAOFactory.creat();
 
-        dBook.add(1226);
+        //dBook.add(1226);
         List<Object> list = dBook.getAll();
 
-        System.out.println(list);
+        System.out.println(list); 
+    }
+    
+    public static void main(String[] args) {
+        new Test().daoTest();
     }
 
 }
