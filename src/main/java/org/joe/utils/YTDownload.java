@@ -18,11 +18,11 @@ public class YTDownload {
         if (!Files.exists(parentPath)) {
             return;
         }
-        CommandTools.execute(String.format("tool/youtube-dl --abort-on-error --restrict-filenames -o %s/%%(title)s.%%(ext)s %s",
+        CommandTools.execute(String.format("tool/youtube-dl --abort-on-error --metadata-from-title --restrict-filenames -o %s/%%(title)s.%%(ext)s %s",
                 parentPath, url));
     }
     
     public static void main(String[] args) {
-        convertToVideo("https://youtu.be/NacWC1hZuhg", Paths.get("E:\\joe\\movid"));
+        convertToVideo("https://www.youtube.com/watch?v=fEO2ejzCyAU", Paths.get("E:\\joe\\movid"));
   }
 }
