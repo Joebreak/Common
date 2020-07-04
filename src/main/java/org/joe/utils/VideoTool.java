@@ -92,8 +92,4 @@ public class VideoTool {
         String total = DateTool.toFormat("HH:mm:ss.SSS", totalTime);
         spileVideo(source, from, total);
     }
-
-    public static void main(String[] args) {
-        convertToMp4(Paths.get("E:\\joe\\movid\\VS.webm"));
-    }
 }
