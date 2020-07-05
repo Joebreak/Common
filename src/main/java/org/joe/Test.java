@@ -1,7 +1,9 @@
 package org.joe;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Scanner;
 
 import org.joe.factory.DAOObject;
 import org.joe.factory.impl.DAOFactory;
@@ -18,12 +20,11 @@ public class Test {
         System.out.println(list); 
     }
     
-    public static void main(String[] args) {
-        YTDownload.convertToVideo("https://www.youtube.com/watch?v=_-iE388q7Xo",
-                Paths.get("E:\\joe\\movid"));
-
-        
-        new Test().daoTest();
+    public static void main(String[] args) throws IOException {
+        Scanner scanner = new Scanner(System.in);
+        String uri = scanner.next();
+        YTDownload.convertToVideo(uri, Paths.get("E:"));
+        System.out.println("done");
     }
 
 }

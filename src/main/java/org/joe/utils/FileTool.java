@@ -8,8 +8,11 @@ import java.io.PrintWriter;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.springframework.core.io.ClassPathResource;
 
 public class FileTool {
 
@@ -78,6 +81,14 @@ public class FileTool {
             e.printStackTrace();
         }
         return contents;
+    }
+
+    public static Path getPathResource(String path) {
+        try {
+            return Paths.get(new ClassPathResource(path).getURI());
+        } catch (Exception e) {
+        }
+        return null;
     }
 
 }

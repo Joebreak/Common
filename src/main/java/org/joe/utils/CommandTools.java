@@ -6,7 +6,8 @@ import java.io.InputStreamReader;
 
 public class CommandTools {
 
-    public static void execute(String code, boolean show) {
+    public static String execute(String code, boolean show) {
+        StringBuilder message = new StringBuilder();
         try {
             ProcessBuilder builder = new ProcessBuilder(code.split(" "));
             builder.redirectErrorStream(true);
@@ -18,16 +19,19 @@ public class CommandTools {
             String line = null;
             while ((line = out.readLine()) != null) {
                 if (show) {
-                    System.out.println(line);
+                    message.append(line);
+                    message.append("\n");
                 }
             }
             process.waitFor();
         } catch (Exception e) {
+            message.append(e.toString());
             System.out.println(e.toString());
         }
+        return message.toString();
     }
 
-    public static void execute(String code) {
-        execute(code, false);
+    public static String execute(String code) {
+        return execute(code, false);
     }
 }
