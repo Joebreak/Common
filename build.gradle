@@ -22,6 +22,9 @@ mainClassName = 'org.joe.Application'
 
 jar {
 	enabled = true
+	from 'src/main/webapp', {
+        into ''
+    }
 }
 
 repositories {
