@@ -92,4 +92,12 @@ public class VideoTool {
         String total = DateTool.toFormat("HH:mm:ss.SSS", totalTime);
         spileVideo(source, from, total);
     }
+    
+    public static void increaseVolume(Path source, int p) {
+        if (!Files.exists(source)) {
+            return;
+        }
+        Path out = Paths.get(source.getParent().toString(), "out." + FileTool.getFileExtension(source.toString()));
+        CommandTools.execute(String.format("ffmpeg -i %s -y -vcodec copy -af \"volume=%sdB\" %s", source, p, out));
+    }
 }
