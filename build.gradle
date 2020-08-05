@@ -29,7 +29,6 @@ jar {
 
 repositories {
 	maven {
-		url 'https://artifact.aspose.com/repo/'
 	}
 	mavenCentral()
 }
@@ -77,7 +76,7 @@ dependencies {
 		//'com.aspose:aspose-words:17.12:jdk16',
 		//'com.aspose:aspose-slides:17.12.1:jdk16',
 		//'com.itextpdf:itextpdf:5.5.13',
-		//'commons-io:commons-io:2.6',
+		'commons-io:commons-io:2.6',
 		//utils -json
 		'org.codehaus.jackson:jackson-mapper-asl:1.9.0',
 		// htmlcompressor
