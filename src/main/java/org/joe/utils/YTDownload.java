@@ -9,9 +9,8 @@ public class YTDownload {
         if (!Files.exists(parentPath)) {
             return "file not found";
         }
-        return CommandTools.execute(
-                String.format("youtube-dl -x --audio-format mp3 -o %s/%%(title)s.%%(ext)s %s",
-                        parentPath, url));
+        return CommandTools
+                .execute(String.format("youtube-dl -x --audio-format mp3 -o %s/%%(title)s.%%(ext)s %s", parentPath, url));
     }
 
     public static String convertToVideo(String url, Path parentPath) {
@@ -19,7 +18,7 @@ public class YTDownload {
             return "file not found";
         }
         return CommandTools.execute(String.format(
-                "youtube-dl --abort-on-error --metadata-from-title --restrict-filenames -o %s/%%(title)s.%%(ext)s %s",
-                parentPath, url));
+                "youtube-dl --abort-on-error --metadata-from-title --restrict-filenames -o %s/%%(title)s.%%(ext)s %s", parentPath,
+                url));
     }
 }

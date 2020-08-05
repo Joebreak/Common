@@ -7,12 +7,12 @@ import org.joe.utils.YTDownload;
 
 public class VideoTest {
 
+    @SuppressWarnings("resource")
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         String uri = scanner.next();
-        YTDownload.convertToVideo(uri, Paths.get("./"));
+        YTDownload.convertToAudio(uri, Paths.get("./"));
         System.out.println("done");
-
     }
 
 }
