@@ -12,7 +12,7 @@ public class VideoTest {
         Scanner scanner = new Scanner(System.in);
         System.out.println("in");
         String uri = scanner.next();
-        YTDownload.convertToAudio(uri, Paths.get("./"));
+        YTDownload.convertToVideo(uri, Paths.get("./"));
         System.out.println("done");
     }
 

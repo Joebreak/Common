@@ -18,6 +18,12 @@ mainClassName = 'org.joe.VideoTest'
 
 jar {
 	enabled = true
+	    manifest {
+        attributes 'Main-Class': 'org.joe.VideoTest'
+    }
+    from 'tools', {
+        into ''
+    }
 }
 
 repositories {
