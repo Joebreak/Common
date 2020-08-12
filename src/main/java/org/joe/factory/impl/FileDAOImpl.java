@@ -16,17 +16,17 @@ import java.util.List;
 
 import org.joe.factory.DAOObject;
 
-class DAOFileImpl implements DAOObject {
+public class FileDAOImpl implements DAOObject {
 
     private List<Object> list = null;
     private final Path path;
     private final String rootPath;
 
-    public DAOFileImpl() {
+    public FileDAOImpl() {
         this(Paths.get(System.getProperty("user.dir")).getRoot().toString());
     }
 
-    public DAOFileImpl(String rootPath) {
+    public FileDAOImpl(String rootPath) {
         this.rootPath = rootPath;
         this.path = Paths.get(rootPath, "db", "sys.oob");
     }

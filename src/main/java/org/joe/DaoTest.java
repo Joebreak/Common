@@ -5,10 +5,10 @@ import java.util.List;
 import org.joe.factory.DAOObject;
 import org.joe.factory.impl.DAOFactory;
 
-public class Test {
+public class DaoTest {
 
     public void daoTest() {
-        DAOObject dBook = DAOFactory.creat();
+        DAOObject dBook = DAOFactory.creatFileDAO();
 
         //dBook.add(1226);
         List<Object> list = dBook.getAll();

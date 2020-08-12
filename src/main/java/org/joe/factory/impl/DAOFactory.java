@@ -8,8 +8,12 @@ public class DAOFactory {
 		super();
 	}
 
-	public static DAOObject creat() {
-		return new DAOFileImpl();
-	}
+    public static DAOObject creatFileDAO() {
+        return new FileDAOImpl();
+    }
+
+    public static DAOObject creatExcelDAO() {
+        return new ExcelDAOImpl();
+    }
 
 }
