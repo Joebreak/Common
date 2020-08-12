@@ -1,5 +1,6 @@
 
-clean build
+clean jar
 
+clean build
 clean distTar
 

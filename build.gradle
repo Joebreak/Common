@@ -21,9 +21,6 @@ jar {
 	    manifest {
         attributes 'Main-Class': 'org.joe.VideoTest'
     }
-    from 'tools', {
-        into ''
-    }
 }
 
 repositories {
@@ -79,6 +76,13 @@ tasks.withType(Test) {
 	ignoreFailures = true
 }
 
+applicationDistribution.from('tools') {
+    into 'tools'
+}
+
+applicationDistribution.from(['start.bat']) {
+    into ''
+}
 tasks.withType(Tar){
 	compression = Compression.GZIP
 }
