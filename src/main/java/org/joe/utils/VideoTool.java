@@ -14,7 +14,15 @@ public class VideoTool {
         if (!Files.exists(source)) {
             return;
         }
-        CommandTools.execute(String.format("ffprobe -v quiet -print_format json -show_format -show_streams %s", source), true);
+        CommandTools.execute(String.format("tools/ffprobe -v quiet -print_format json -show_format -show_streams %s", source),
+                true);
+    }
+
+    public static void snapshot(Path source, Path out) {
+        if (!Files.exists(source)) {
+            return;
+        }
+        CommandTools.execute(String.format("tools/ffmpeg -i %s -ss 50 -y -vframes:v 1 %s", source, out));
     }
 
     public static void convertToMp4(Path source) {
@@ -22,14 +30,14 @@ public class VideoTool {
             return;
         }
         Path out = Paths.get(source.getParent().toString(), "out.mp4");
-        CommandTools.execute(String.format("ffmpeg -i %s -y -vcodec libx264 -acodec aac %s", source, out));
+        CommandTools.execute(String.format("tools/ffmpeg -i %s -y -vcodec libx264 -acodec aac %s", source, out));
     }
 
     public static void spileVideo(Path source, Path out) {
         if (!Files.exists(source)) {
             return;
         }
-        CommandTools.execute(String.format("ffmpeg -i %s -y -vcodec copy -an %s", source, out));
+        CommandTools.execute(String.format("tools/ffmpeg -i %s -y -vcodec copy -an %s", source, out));
     }
 
     public static void spileVideo(Path source) {
@@ -41,7 +49,7 @@ public class VideoTool {
         if (!Files.exists(source)) {
             return;
         }
-        CommandTools.execute(String.format("ffmpeg -i %s -y -acodec libmp3lame -vn %s", source, out));
+        CommandTools.execute(String.format("tools/ffmpeg -i %s -y -acodec libmp3lame -vn %s", source, out));
     }
 
     public static void spileAudio(Path source) {
@@ -58,7 +66,8 @@ public class VideoTool {
             }
             String name = String.format("%s\\%s_%d%s", source.getParent(),
                     FileTool.getBaseFileName(source.getName(source.getNameCount() - 1).toString()), ++index, ".ts");
-            CommandTools.execute(String.format("ffmpeg -i %s -y -c copy -bsf:v h264_mp4toannexb -f mpegts %s", source, name));
+            CommandTools
+                    .execute(String.format("tools/ffmpeg -i %s -y -c copy -bsf:v h264_mp4toannexb -f mpegts %s", source, name));
             fileNames.add(name);
         }
         StringBuilder sb = new StringBuilder();
@@ -68,7 +77,7 @@ public class VideoTool {
                 sb.append("|");
             }
         }
-        CommandTools.execute(String.format("ffmpeg -i  \"concat:%s\" -y %s", sb.toString(), out));
+        CommandTools.execute(String.format("tools/ffmpeg -i  \"concat:%s\" -y %s", sb.toString(), out));
     }
 
     public static void mergeVideo(List<Path> sources) {
@@ -84,7 +93,7 @@ public class VideoTool {
             return;
         }
         Path out = Paths.get(source.getParent().toString(), "out." + FileTool.getFileExtension(source.toString()));
-        CommandTools.execute(String.format("ffmpeg -i %s -y -ss %s -t %s %s", source, from, total, out));
+        CommandTools.execute(String.format("tools/ffmpeg -i %s -y -ss %s -t %s %s", source, from, total, out));
     }
 
     public static void spileVideo(Path source, Date fromTime, Date totalTime) {
@@ -92,12 +101,12 @@ public class VideoTool {
         String total = DateTool.toFormat("HH:mm:ss.SSS", totalTime);
         spileVideo(source, from, total);
     }
-    
+
     public static void increaseVolume(Path source, int p) {
         if (!Files.exists(source)) {
             return;
         }
         Path out = Paths.get(source.getParent().toString(), "out." + FileTool.getFileExtension(source.toString()));
-        CommandTools.execute(String.format("ffmpeg -i %s -y -vcodec copy -af \"volume=%sdB\" %s", source, p, out));
+        CommandTools.execute(String.format("tools/ffmpeg -i %s -y -vcodec copy -af \"volume=%sdB\" %s", source, p, out));
     }
 }
