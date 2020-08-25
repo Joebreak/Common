@@ -52,6 +52,9 @@ dependencies {
 		'org.codehaus.jackson:jackson-mapper-asl:1.9.0',
 		// htmlcompressor
 		'com.googlecode.htmlcompressor:htmlcompressor:1.5.2',
+		  // apache poi for excel, word documents
+        'org.apache.poi:poi:4.1.0',
+        'org.apache.poi:poi-ooxml:4.1.0',
 		// others
 		'com.squareup.okhttp3:okhttp:3.10.0'
 	)

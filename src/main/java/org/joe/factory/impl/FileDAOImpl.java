@@ -37,13 +37,6 @@ public class FileDAOImpl implements DAOObject {
     }
 
     @Override
-    public void add(List<Object> comicList) {
-        list = getAll();
-        list.addAll(comicList);
-        save(list);
-    }
-
-    @Override
     public void remove(int index) {
         list = getAll();
         list.remove(index);
@@ -110,6 +103,12 @@ public class FileDAOImpl implements DAOObject {
 
     public String getRootPath() {
         return rootPath;
+    }
+
+    @Override
+    public void save() {
+        // TODO Auto-generated method stub
+        
     }
 
 }

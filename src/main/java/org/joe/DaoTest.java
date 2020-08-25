@@ -11,12 +11,15 @@ public class DaoTest {
         new DaoTest().daoTest();
     }
     public void daoTest() {
-        DAOObject dBook = DAOFactory.creatFileDAO();
+        DAOObject dBook = DAOFactory.creatExcelDAO();
 
-        //dBook.add(1226);
         List<Object> list = dBook.getAll();
-
+        if (list.isEmpty()) {
+            dBook.add(1226);
+        }
+        list = dBook.getAll();
         System.out.println(list); 
+        dBook.save();
     }
 
 }
