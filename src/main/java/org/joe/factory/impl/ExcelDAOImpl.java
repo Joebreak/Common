@@ -1,7 +1,6 @@
 package org.joe.factory.impl;
 
 import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -11,6 +10,9 @@ import java.util.List;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -37,15 +39,7 @@ public class ExcelDAOImpl implements DAOObject {
         this.workbook = readWorkbookFromExcel();
     }
 
-    private Workbook readWorkbookFromXlsx(Path path) {
-        try (XSSFWorkbook workbook = new XSSFWorkbook(Files.newInputStream(path))) {
-            return workbook;
-        } catch (Exception e) {
-        }
-        return null;
-    }
-
-    private Workbook readWorkbookFromXls(Path path) {
+    private Workbook readWorkbook(Path path) {
         try {
             return WorkbookFactory.create(Files.newInputStream(path));
         } catch (Exception e) {
@@ -57,21 +51,30 @@ public class ExcelDAOImpl implements DAOObject {
         if (path == null || StringTool.isNullOrEmpty(path.getFileName().toString())) {
             return null;
         }
-        String extension = FileTool.getFileExtension(path.getFileName().toString());
-        if ("xls".equalsIgnoreCase(extension)) {
-            return readWorkbookFromXls(path);
-        } else if ("xlsx".equalsIgnoreCase(extension)) {
-            return readWorkbookFromXlsx(path);
-        }
-        return null;
+        return readWorkbook(path);
     }
     
     private void creadFile() {
-        try (Workbook workbook = new HSSFWorkbook()) {
+        try {
             Files.createDirectories(path.getParent());
+        } catch (Exception e) {
+        }
+        if (StringTool.isNullOrEmpty(path.getFileName().toString())) {
+            return;
+        }
+        String extension = FileTool.getFileExtension(path.getFileName().toString());
+        try {
+            Workbook workbook = null;
+            if ("xls".equalsIgnoreCase(extension)) {
+                workbook = new HSSFWorkbook();
+            } else if ("xlsx".equalsIgnoreCase(extension)) {
+                workbook = new XSSFWorkbook();
+            }
+            if (workbook == null) {
+                return;
+            }
             workbook.createSheet("Sheet1");
-            OutputStream out = Files.newOutputStream(path);
-            workbook.write(out);
+            workbook.write(Files.newOutputStream(path));
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
@@ -103,10 +106,34 @@ public class ExcelDAOImpl implements DAOObject {
             Iterator<Cell> cellIterator = row.cellIterator();
             if (cellIterator.hasNext()) {
                 Cell cell = cellIterator.next();
-                datas.add(cell.getStringCellValue());
+                datas.add(getCellValue(cell));
             }
         }
         return datas;
+    }
+
+    private String getCellValue(Cell cell) {
+        if (cell == null) {
+            return null;
+        }
+        CellType cellType = cell.getCellType();
+        if (cellType == CellType.STRING) {
+            return cell.getStringCellValue();
+        } else if (cellType == CellType.NUMERIC) {
+            if (checkCellDateFormat(cell)) {
+                return cell.toString();
+            }
+            return StringTool.toStringFromInt((int) cell.getNumericCellValue());
+        } else if (cellType == CellType.BLANK) {
+            return "";
+        } else {
+            return cell.toString();
+        }
+    }
+
+    private boolean checkCellDateFormat(Cell cell) {
+        CellStyle cellStyle = cell.getCellStyle();
+        return DateUtil.isADateFormat(cellStyle.getDataFormat(), cellStyle.getDataFormatString());
     }
 
     @Override
@@ -124,7 +151,6 @@ public class ExcelDAOImpl implements DAOObject {
             workbook.write(out);
             workbook.close();
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
         }
     }
 

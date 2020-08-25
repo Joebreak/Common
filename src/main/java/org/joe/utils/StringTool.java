@@ -15,4 +15,8 @@ public class StringTool {
     public static String getUUID() {
         return UUID.randomUUID().toString();
     }
+
+    public static String toStringFromInt(Integer value) {
+        return value == null ? null : String.valueOf(value);
+    }
 }
