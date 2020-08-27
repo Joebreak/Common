@@ -91,12 +91,15 @@ public class FileTool {
     }
 
     public static Path createTempDirectory(String folderName) {
-        Path tempPath = Paths.get(System.getProperty("java.io.tmpdir"), folderName);
-        if (Files.exists(tempPath)) {
-            return tempPath;
+        return createDirectory(Paths.get(System.getProperty("java.io.tmpdir"), folderName));
+    }
+
+    public static Path createDirectory(Path path) {
+        if (Files.exists(path)) {
+            return path;
         }
         try {
-            return Files.createDirectory(tempPath);
+            return Files.createDirectory(path);
         } catch (IOException e) {
         }
         return null;
