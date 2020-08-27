@@ -10,15 +10,14 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.joe.factory.DAOObject;
+import org.joe.model.DaoFile;
 
 public class FileDAOImpl implements DAOObject {
 
-    private List<Object> list = null;
+    private List<DaoFile> list = null;
     private final Path path;
     private final String rootPath;
 
@@ -29,46 +28,28 @@ public class FileDAOImpl implements DAOObject {
     public FileDAOImpl(String rootPath) {
         this.rootPath = rootPath;
         this.path = Paths.get(rootPath, "db", "sys.oob");
+        list = getAll();
     }
 
     @Override
-    public void add(Object item) {
-        add(Arrays.asList(item));
+    public void add(DaoFile data) {
+        list.add(data);
     }
 
     @Override
     public void remove(int index) {
-        list = getAll();
         list.remove(index);
-        save(list);
-    }
-
-    private void save(List<Object> list) {
-        if (Files.notExists(path)) {
-            creadFile();
-        }
-        try (FileOutputStream fos = new FileOutputStream(path.toFile());
-                ObjectOutputStream oos = new ObjectOutputStream(fos);) {
-            for (Object cb : list) {
-                oos.writeObject(cb);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
-    public List<Object> getAll() {
+    public List<DaoFile> getAll() {
         if (Files.notExists(path)) {
             creadFile();
         }
-        list = new ArrayList<>();
         try (FileInputStream fis = new FileInputStream(path.toString());
                 ObjectInputStream ois = new ObjectInputStream(fis)) {
             while (true) {
-                list.add((Object) ois.readObject());
+                list.add((DaoFile) ois.readObject());
             }
         } catch (ClassCastException e) {
             e.printStackTrace();
@@ -107,6 +88,23 @@ public class FileDAOImpl implements DAOObject {
 
     @Override
     public void save() {
+        if (Files.notExists(path)) {
+            creadFile();
+        }
+        try (FileOutputStream fos = new FileOutputStream(path.toFile());
+                ObjectOutputStream oos = new ObjectOutputStream(fos);) {
+            for (Object cb : list) {
+                oos.writeObject(cb);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void set(int index, DaoFile data) {
         // TODO Auto-generated method stub
         
     }

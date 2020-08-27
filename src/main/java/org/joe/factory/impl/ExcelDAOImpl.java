@@ -5,8 +5,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -19,6 +22,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.joe.factory.DAOObject;
+import org.joe.model.DaoFile;
 import org.joe.utils.FileTool;
 import org.joe.utils.StringTool;
 
@@ -53,7 +57,7 @@ public class ExcelDAOImpl implements DAOObject {
         }
         return readWorkbook(path);
     }
-    
+
     private void creadFile() {
         try {
             Files.createDirectories(path.getParent());
@@ -81,7 +85,7 @@ public class ExcelDAOImpl implements DAOObject {
     }
 
     @Override
-    public void add(Object object) {
+    public void add(DaoFile data) {
         Sheet sheet = workbook.getSheetAt(0);
         if (sheet == null) {
             return;
@@ -89,57 +93,51 @@ public class ExcelDAOImpl implements DAOObject {
         Iterator<Row> rowIterator = sheet.iterator();
         int rowCount = rowIterator.hasNext() ? sheet.getLastRowNum() + 1 : sheet.getLastRowNum();
         Row row = sheet.createRow(rowCount);
-        Cell cell = row.createCell(0);
-        cell.setCellValue(object.toString());
+        for (Entry<Integer, Object> entry : data.getDataMap().entrySet()) {
+            Cell cell = row.createCell(entry.getKey());
+            Object value = entry.getValue();
+            if (value == null) {
+                cell.setCellValue((Date) null);
+            } else if (value instanceof Date) {
+                cell.setCellValue((Date) value);
+            } else if (value instanceof Integer) {
+                cell.setCellValue((Integer) value);
+            } else {
+                cell.setCellValue(value.toString());
+            }
+        }
     }
 
     @Override
-    public List<Object> getAll() {
-        List<Object> datas = new ArrayList<>();
-        Sheet sheet =  workbook.getSheetAt(0);
+    public void set(int index, DaoFile data) {
+        Sheet sheet = workbook.getSheetAt(0);
         if (sheet == null) {
-            return datas;
+            return;
         }
-        Iterator<Row> rowIterator = sheet.iterator();
-        while (rowIterator.hasNext()) {
-            Row row = rowIterator.next();
-            Iterator<Cell> cellIterator = row.cellIterator();
-            if (cellIterator.hasNext()) {
-                Cell cell = cellIterator.next();
-                datas.add(getCellValue(cell));
+        Row row = sheet.createRow(index);
+        for (Entry<Integer, Object> entry : data.getDataMap().entrySet()) {
+            Cell cell = row.createCell(entry.getKey());
+            Object value = entry.getValue();
+            if (value == null) {
+                cell.setCellValue((Date) null);
+            } else if (value instanceof Date) {
+                cell.setCellValue((Date) value);
+            } else if (value instanceof Integer) {
+                cell.setCellValue((Integer) value);
+            } else {
+                cell.setCellValue(value.toString());
             }
         }
-        return datas;
-    }
-
-    private String getCellValue(Cell cell) {
-        if (cell == null) {
-            return null;
-        }
-        CellType cellType = cell.getCellType();
-        if (cellType == CellType.STRING) {
-            return cell.getStringCellValue();
-        } else if (cellType == CellType.NUMERIC) {
-            if (checkCellDateFormat(cell)) {
-                return cell.toString();
-            }
-            return StringTool.toStringFromInt((int) cell.getNumericCellValue());
-        } else if (cellType == CellType.BLANK) {
-            return "";
-        } else {
-            return cell.toString();
-        }
-    }
-
-    private boolean checkCellDateFormat(Cell cell) {
-        CellStyle cellStyle = cell.getCellStyle();
-        return DateUtil.isADateFormat(cellStyle.getDataFormat(), cellStyle.getDataFormatString());
     }
 
     @Override
     public void remove(int index) {
-        // TODO Auto-generated method stub
-
+        Sheet sheet = workbook.getSheetAt(0);
+        if (sheet == null) {
+            return;
+        }
+        Row row = sheet.createRow(index);
+        sheet.removeRow(row);
     }
 
     @Override
@@ -152,6 +150,52 @@ public class ExcelDAOImpl implements DAOObject {
             workbook.close();
         } catch (Exception ex) {
         }
+    }
+
+    @Override
+    public List<DaoFile> getAll() {
+        List<DaoFile> datas = new ArrayList<>();
+        Sheet sheet = workbook.getSheetAt(0);
+        if (sheet == null) {
+            return datas;
+        }
+        Iterator<Row> rowIterator = sheet.iterator();
+        while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
+            Iterator<Cell> cellIterator = row.cellIterator();
+            DaoFile data = new DaoFile();
+            Map<Integer, Object> dataMap = data.getDataMap();
+            while (cellIterator.hasNext()) {
+                Cell cell = cellIterator.next();
+                dataMap.put(cell.getColumnIndex(), getCellValue(cell));
+            }
+            datas.add(data);
+        }
+        return datas;
+    }
+
+    private Object getCellValue(Cell cell) {
+        if (cell == null) {
+            return null;
+        }
+        CellType cellType = cell.getCellType();
+        if (cellType == CellType.STRING) {
+            return cell.getStringCellValue();
+        } else if (cellType == CellType.NUMERIC) {
+            if (checkCellDateFormat(cell)) {
+                return Integer.parseInt(cell.toString());
+            }
+            return StringTool.toStringFromInt((int) cell.getNumericCellValue());
+        } else if (cellType == CellType.BLANK) {
+            return "";
+        } else {
+            return cell.toString();
+        }
+    }
+
+    private boolean checkCellDateFormat(Cell cell) {
+        CellStyle cellStyle = cell.getCellStyle();
+        return DateUtil.isADateFormat(cellStyle.getDataFormat(), cellStyle.getDataFormatString());
     }
 
 }

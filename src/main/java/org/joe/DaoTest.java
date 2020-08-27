@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.joe.factory.DAOObject;
 import org.joe.factory.impl.DAOFactory;
+import org.joe.model.DaoFile;
 
 public class DaoTest {
 
@@ -13,9 +14,11 @@ public class DaoTest {
     public void daoTest() {
         DAOObject dBook = DAOFactory.creatExcelDAO();
 
-        List<Object> list = dBook.getAll();
+        List<DaoFile> list = dBook.getAll();
         if (list.isEmpty()) {
-            dBook.add(1226);
+            DaoFile daoFile = new DaoFile();
+            daoFile.put(1226);
+            dBook.set(5, daoFile);
         }
         list = dBook.getAll();
         System.out.println(list); 
