@@ -111,5 +111,14 @@ public class FileTool {
         } catch (Exception ex) {
         }
     }
+    
+    public static byte[] readAllBytes(Path path) {
+        try {
+            return Files.readAllBytes(path);
+        } catch (IOException ioe) {
+        }
+        return null;
+    }
+    
 
 }
