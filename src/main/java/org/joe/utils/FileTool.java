@@ -111,7 +111,7 @@ public class FileTool {
         } catch (Exception ex) {
         }
     }
-    
+
     public static byte[] readAllBytes(Path path) {
         try {
             return Files.readAllBytes(path);
@@ -119,6 +119,5 @@ public class FileTool {
         }
         return null;
     }
-    
 
 }
