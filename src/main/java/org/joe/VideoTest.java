@@ -7,8 +7,13 @@ import org.joe.utils.YTDownload;
 
 public class VideoTest {
 
-    @SuppressWarnings("resource")
+    
     public static void main(String[] args) {
+        downloadYT();
+    }
+    
+    @SuppressWarnings("resource")
+    public static void downloadYT() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("in");
         String uri = scanner.next();

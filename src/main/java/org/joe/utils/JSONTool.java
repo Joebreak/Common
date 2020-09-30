@@ -1,6 +1,6 @@
 package org.joe.utils;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class JSONTool {
 
@@ -19,6 +19,7 @@ public class JSONTool {
 			try {
 				return JSON_MAPPER.readValue(jsonString, clazz);
 			} catch (Exception ex) { // ignore ex
+			    System.out.println(ex);
 			}
 		}
 		return null;

@@ -19,14 +19,14 @@ public class CommandTools {
             String line = null;
             while ((line = out.readLine()) != null) {
                 if (show) {
-                    message.append(line);
-                    message.append("\n");
+                    System.out.println(show);
                 }
+                message.append(line);
+                message.append("\n");
             }
             process.waitFor();
-        } catch (Exception e) {
-            message.append(e.toString());
-            System.out.println(e.toString());
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
         }
         return message.toString();
     }

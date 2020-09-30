@@ -109,4 +109,12 @@ public class VideoTool {
         Path out = Paths.get(source.getParent().toString(), "out." + FileTool.getFileExtension(source.toString()));
         CommandTools.execute(String.format("tools/ffmpeg -i %s -y -vcodec copy -af \"volume=%sdB\" %s", source, p, out));
     }
+    
+    // merge srt -vf "subtitles=sourceSubtitle.srt"
+    //ffmpeg -i input.wav -filter_complex afade=t=in:ss=0:d=5 output.wav
+    //ffmpeg -i input.wav -filter_complex afade=t=out:ss=200:d=5 output.wav
+    //ffmpeg -i input1.wav -i input2.wav -filter_complex amix=inputs=2:duration=shortest output.wav
+    //ffmpeg -i input.wav -filter_complex atempo=0.5 output.wav
+    
+    
 }
