@@ -35,6 +35,10 @@ public class FileTool {
         return path.substring(path.lastIndexOf("\\") + 1, lastIndex);
     }
 
+    public static String getParentBasePath(String path) {
+        return path.substring(0, path.lastIndexOf("."));
+    }
+
     public static String getParentPath(String path) {
         return path.substring(0, path.lastIndexOf("\\") + 1);
     }
@@ -54,7 +58,8 @@ public class FileTool {
     }
 
     public void saveText(Path path, List<String> strings) {
-        try (FileWriter fw = new FileWriter(path.toFile()); PrintWriter outs = new PrintWriter(fw);) {
+        try (FileWriter fw = new FileWriter(path.toFile());
+                PrintWriter outs = new PrintWriter(fw);) {
             for (String string : strings) {
                 outs.print(string + ";");
             }
@@ -68,7 +73,8 @@ public class FileTool {
             creadFile(path);
         }
         List<String> contents = new ArrayList<>();
-        try (FileReader fw = new FileReader(path.toFile()); BufferedReader in = new BufferedReader(fw);) {
+        try (FileReader fw = new FileReader(path.toFile());
+                BufferedReader in = new BufferedReader(fw);) {
             String s[], outstring;
             if ((outstring = in.readLine()) != null) {
                 s = outstring.split(";");

@@ -1,9 +1,10 @@
 package org.joe;
 
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Scanner;
 
-import org.joe.factory.impl.VideoFactory;
+import org.joe.utils.VideoTool;
 import org.joe.utils.YTDownload;
 
 public class VideoTest {
@@ -11,8 +12,8 @@ public class VideoTest {
     
 
     public static void main(String[] args) {
-        VideoFactory.spileTime(Paths.get("D:\\joe\\movid\\編輯影片\\out104.mp4"), "", "50",
-                Paths.get("D:\\joe\\movid\\編輯影片\\out.mp4"));
+        VideoTool.mergeVideo(Arrays.asList(Paths.get("D:\\out104.mp4"), 
+                Paths.get("D:\\out.mp4")), Paths.get("D:\\out123.mp4"), null);
     }
 
     @SuppressWarnings("resource")
