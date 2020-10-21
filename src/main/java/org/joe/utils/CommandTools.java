@@ -23,6 +23,13 @@ public class CommandTools {
                 }
                 message.append(line);
                 message.append("\n");
+                int timeIndex = line.indexOf("time=");
+                if (timeIndex != -1) {
+                    int end = line.indexOf(" bitrate");
+                    if (end != -1) {
+                        System.out.println(line.substring(timeIndex, end));
+                    }
+                } 
             }
             process.waitFor();
         } catch (Exception ex) {
