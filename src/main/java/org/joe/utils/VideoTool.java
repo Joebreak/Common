@@ -13,14 +13,21 @@ public class VideoTool {
     private static String ffprobePath = "ffprobe";
     private static String ffmpegPath = "ffmpeg";
 
-    public static VideoData getVideoDate(Path source) {
+    public static VideoData getVideoDate(Path source, boolean show) {
         if (!Files.exists(source)) {
             return null;
         }
-        String code = String.format("%s -v quiet -print_format json -show_format -show_streams %s", ffprobePath, source);
+        String code = String.format("%s -v quiet -print_format json -show_format -show_streams \"%s\"", ffprobePath, source);
         System.out.println(code);
         String message = CommandTools.execute(code);
+        if (show) {
+            System.out.println(message);
+        }
         return JSONTool.readJSON(message, VideoData.class);
+    }
+    
+    public static VideoData getVideoDate(Path source) {
+        return getVideoDate(source, false);
     }
 
     public static void snapshot(Path source, String time, Path out) {
