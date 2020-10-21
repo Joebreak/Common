@@ -27,7 +27,7 @@ public class VideoTool {
         if (!Files.exists(source)) {
             return;
         }
-        String code = String.format("%s -i %s -ss %s -y -vframes:v 1 %s", ffmpegPath, source, time, out);
+        String code = String.format("%s -i \"%s\" -ss %s -y -vframes:v 1 \"%s\"", ffmpegPath, source, time, out);
         System.out.println(code);
         CommandTools.execute(code);
     }
@@ -36,7 +36,7 @@ public class VideoTool {
         if (!Files.exists(source)) {
             return;
         }
-        String code = String.format("%s -i %s -y -vcodec copy -af \"volume=%sdB\" %s", ffmpegPath, source, dB, out);
+        String code = String.format("%s -i \"%s\" -y -vcodec copy -af \"volume=%sdB\" \"%s\"", ffmpegPath, source, dB, out);
         System.out.println(code);
         CommandTools.execute(code);
     }
@@ -47,9 +47,9 @@ public class VideoTool {
         }
         StringBuilder code = new StringBuilder();
         code.append(ffmpegPath);
-        code.append(" -i ");
+        code.append(" -i \"");
         code.append(source);
-        code.append(" -y -c copy ");
+        code.append("\" -y -c copy ");
         if (!StringTool.isNullOrEmpty(fromTime)) {
             code.append("-ss ");
             code.append(fromTime);
@@ -60,7 +60,9 @@ public class VideoTool {
             code.append(totalTime);
             code.append(" ");
         }
+        code.append("\"");
         code.append(out);
+        code.append("\"");
         System.out.println(code);
         CommandTools.execute(code.toString());
     }
@@ -69,7 +71,7 @@ public class VideoTool {
         if (!Files.exists(source)) {
             return;
         }
-        String code = String.format("%s -i %s -y -vcodec copy -an %s", ffmpegPath, source, out);
+        String code = String.format("%s -i \"%s\" -y -vcodec copy -an %s", ffmpegPath, source, out);
         System.out.println(code);
         CommandTools.execute(code);
     }
@@ -78,7 +80,7 @@ public class VideoTool {
         if (!Files.exists(source)) {
             return;
         }
-        String code = String.format("%s -i %s -y -acodec libmp3lame -vn %s", ffmpegPath, source, out);
+        String code = String.format("%s -i \"%s\" -y -acodec libmp3lame -vn \"%s\"", ffmpegPath, source, out);
         System.out.println(code);
         CommandTools.execute(code);
     }
@@ -87,7 +89,7 @@ public class VideoTool {
         if (!Files.exists(source)) {
             return;
         }
-        String code = String.format("%s -i %s -y -vcodec libx264 -acodec aac %s", ffmpegPath, source, out);
+        String code = String.format("%s -i \"%s\" -y -vcodec libx264 -acodec aac \"%s\"", ffmpegPath, source, out);
         System.out.println(code);
         CommandTools.execute(code);
     }
@@ -100,7 +102,7 @@ public class VideoTool {
                 continue;
             }
             String name = FileTool.getParentPath(source.toString()).concat(String.format("file_%02d.ts", ++index));
-            String code = String.format("%s -i %s -y -c copy -bsf:v h264_mp4toannexb -f mpegts %s", ffmpegPath, source, name);
+            String code = String.format("%s -i \"%s\" -y -c copy -bsf:v h264_mp4toannexb -f mpegts \"%s\"", ffmpegPath, source, name);
             System.out.println(code);
             CommandTools.execute(code);
             fileNames.add(name);
@@ -125,7 +127,9 @@ public class VideoTool {
             code.append(subtitle);
             code.append("\" ");
         }
+        code.append("\"");
         code.append(out);
+        code.append("\"");
         System.out.println(code);
         CommandTools.execute(code.toString());
     }
