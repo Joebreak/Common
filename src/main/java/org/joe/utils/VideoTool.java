@@ -2,6 +2,7 @@ package org.joe.utils;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -25,7 +26,7 @@ public class VideoTool {
         }
         return JSONTool.readJSON(message, VideoData.class);
     }
-    
+
     public static VideoData getVideoDate(Path source) {
         return getVideoDate(source, false);
     }
@@ -92,6 +93,74 @@ public class VideoTool {
         CommandTools.execute(code);
     }
 
+    public static void getImages(Path source, String fromTime, String totalTime, String rate, Path parendPath) {
+        if (!Files.exists(source) || !Files.exists(parendPath)) {
+            return;
+        }
+        StringBuilder code = new StringBuilder();
+        code.append(ffmpegPath);
+        code.append(" -i \"");
+        code.append(source);
+        code.append("\" -y ");
+        if (!StringTool.isNullOrEmpty(fromTime)) {
+            code.append("-ss ");
+            code.append(fromTime);
+            code.append(" ");
+        }
+        if (!StringTool.isNullOrEmpty(totalTime)) {
+            code.append("-t ");
+            code.append(totalTime);
+            code.append(" ");
+        }
+        code.append("-r ");
+        if (StringTool.isNullOrEmpty(rate)) {
+            code.append("0.25 ");
+        } else {
+            code.append(rate);
+            code.append(" ");
+        }
+        code.append("\"");
+        String baseFileName = FileTool.getBaseFileName(source.toString());
+        code.append(Paths.get(parendPath.toString(), baseFileName.concat("_frames_%04d.png")));
+        code.append("\"");
+        System.out.println(code);
+        CommandTools.execute(code.toString());
+    }
+
+    public static void getGif(Path source, String fromTime, String totalTime, String rate, Path parendPath) {
+        if (!Files.exists(source) || !Files.exists(parendPath)) {
+            return;
+        }
+        StringBuilder code = new StringBuilder();
+        code.append(ffmpegPath);
+        code.append(" -i \"");
+        code.append(source);
+        code.append("\" -y ");
+        if (!StringTool.isNullOrEmpty(fromTime)) {
+            code.append("-ss ");
+            code.append(fromTime);
+            code.append(" ");
+        }
+        if (!StringTool.isNullOrEmpty(totalTime)) {
+            code.append("-t ");
+            code.append(totalTime);
+            code.append(" ");
+        }
+        code.append("-r ");
+        if (StringTool.isNullOrEmpty(rate)) {
+            code.append("10 ");
+        } else {
+            code.append(rate);
+            code.append(" ");
+        }
+        code.append("\"");
+        String baseFileName = FileTool.getBaseFileName(source.toString());
+        code.append(Paths.get(parendPath.toString(), baseFileName.concat("_outGif.gif")));
+        code.append("\"");
+        System.out.println(code);
+        CommandTools.execute(code.toString());
+    }
+
     public static void convertToMp4(Path source, Path out) {
         if (!Files.exists(source)) {
             return;
@@ -109,7 +178,8 @@ public class VideoTool {
                 continue;
             }
             String name = FileTool.getParentPath(source.toString()).concat(String.format("file_%02d.ts", ++index));
-            String code = String.format("%s -i \"%s\" -y -c copy -bsf:v h264_mp4toannexb -f mpegts \"%s\"", ffmpegPath, source, name);
+            String code = String.format("%s -i \"%s\" -y -c copy -bsf:v h264_mp4toannexb -f mpegts \"%s\"", ffmpegPath, source,
+                    name);
             System.out.println(code);
             CommandTools.execute(code);
             fileNames.add(name);
@@ -141,7 +211,6 @@ public class VideoTool {
         CommandTools.execute(code.toString());
     }
 
-    // merge srt -vf "subtitles=sourceSubtitle.srt"
     // ffmpeg -i input.wav -filter_complex afade=t=in:ss=0:d=5 output.wav
     // ffmpeg -i input.wav -filter_complex afade=t=out:ss=200:d=5 output.wav
 
@@ -149,9 +218,7 @@ public class VideoTool {
     // amix=inputs=2:duration=shortest output.wav
     // ffmpeg -i input.wav -filter_complex atempo=0.5 output.wav
 
-//    ffmpeg -i input.mp4 -vf scale=100:-1 -t 5 -r 10 output.gif
-//    -vf scale=100:-1 寬度100，分辨率比例不變；-t 5視頻前5s ;-r 10幀率10
-    
-//    ffmpeg -i input.mp4 -r 0.25 frames_%04d.png
-    
+//    -vf "subtitles=sourceSubtitle.srt"
+//    -vf scale=100:-1
+
 }
