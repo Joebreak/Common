@@ -198,8 +198,6 @@ public class VideoTool {
         code.append(sb);
         code.append("\" -y -c copy ");
         if (!StringTool.isNullOrEmpty(subtitle)) {
-            code.append(" -i ");
-            code.append(subtitle);
             code.append(" -vf \"subtitles=");
             code.append(subtitle);
             code.append("\" ");
@@ -210,13 +208,6 @@ public class VideoTool {
         System.out.println(code);
         CommandTools.execute(code.toString());
     }
-
-    // ffmpeg -i input.wav -filter_complex afade=t=in:ss=0:d=5 output.wav
-    // ffmpeg -i input.wav -filter_complex afade=t=out:ss=200:d=5 output.wav
-
-    // ffmpeg -i input1.wav -i input2.wav -filter_complex
-    // amix=inputs=2:duration=shortest output.wav
-    // ffmpeg -i input.wav -filter_complex atempo=0.5 output.wav
 
 //    -vf "subtitles=sourceSubtitle.srt"
 //    -vf scale=100:-1
