@@ -133,9 +133,7 @@ public class VideoTool {
         }
         StringBuilder code = new StringBuilder();
         code.append(ffmpegPath);
-        code.append(" -i \"");
-        code.append(source);
-        code.append("\" -y ");
+        code.append(" ");
         if (!StringTool.isNullOrEmpty(fromTime)) {
             code.append("-ss ");
             code.append(fromTime);
@@ -146,6 +144,11 @@ public class VideoTool {
             code.append(totalTime);
             code.append(" ");
         }
+        code.append("-i \"");
+        code.append(source);
+        code.append("\" -y ");
+
+        code.append("-vf \"split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse\" -loop 0 ");
         code.append("-r ");
         if (StringTool.isNullOrEmpty(rate)) {
             code.append("10 ");
