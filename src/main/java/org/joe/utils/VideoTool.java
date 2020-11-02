@@ -201,7 +201,7 @@ public class VideoTool {
         code.append(sb);
         code.append("\" -y -c copy ");
         if (!StringTool.isNullOrEmpty(subtitle)) {
-            code.append(" -vf \"subtitles=");
+            code.append("-vf \"subtitles=");
             code.append(subtitle);
             code.append("\" ");
         }

@@ -81,21 +81,7 @@ public class ConnectionFactory {
         for (Entry<String, String> item : headers.entrySet()) {
             urlConnection.setRequestProperty(item.getKey(), item.getValue());
         }
-        // urlConnection.setRequestProperty("Content-Type", "application/json");
-        // urlConnection.setRequestProperty("charset", "utf-8");
-        // urlConnection.setRequestProperty("neweggbox-sso-token",
-        // "002012619c7681b433459e992cf4fe065c5f3f");
     }
-
-//    private Map<String, String> getLineBotHeaders() {
-//        Map<String, String> headers = new HashMap<>();
-//        headers.put("Content-Type", "application/json");
-//        headers.put("Authorization",
-//                "Bearer rTeZbz5F1JtwqRNmc3CVdZIR/Sz58wjRksXogigbVI4xRmn8bklpxNZWxoPZvEiZ"
-//                        + "gRGlt7PncUhh96qraOyjlYW7uyLyXIZqLFB+vAzftYCIRU/yBLG/JgWwIDNp/1"
-//                        + "PMbuPVtsc7UHoUrlC6BbPYfAdB04t89/1O/w1cDnyilFU=");
-//        return headers;
-//    }
 
     public InputStream getInputStream(String url) {
         URL pageUrl = null;
@@ -131,7 +117,7 @@ public class ConnectionFactory {
         // con.setRequestProperty("User-Agent", USER_AGENT);
 
         int responseCode = con.getResponseCode();
-        System.out.println("\nSending 'GET' request to URL : " + url);
+        System.out.println("Sending 'GET' request to URL : " + url);
         System.out.println("Response Code : " + responseCode);
 
         BufferedReader in = new BufferedReader(
@@ -148,14 +134,4 @@ public class ConnectionFactory {
         System.out.println(response.toString());
 
     }
-
-//	public void sendLineBotReply(MessageReplyRequest request) {
-//		String replyUrl = "https://api.line.me/v2/bot/message/reply";
-//		sendPostRequestAsEntity(replyUrl,getLineBotHeaders(), JSONTool.writeJSON(request));
-//	}
-//
-//	public void sendLineBotPush(MessagePushRequest request) {
-//		String replyUrl = "https://api.line.me/v2/bot/message/push";
-//		sendPostRequestAsEntity(replyUrl,getLineBotHeaders(), JSONTool.writeJSON(request));
-//	}
 }
