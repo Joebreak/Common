@@ -109,4 +109,10 @@ public class FileDAOImpl implements DAOObject {
         
     }
 
+    @Override
+    public DaoFile get(int index) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

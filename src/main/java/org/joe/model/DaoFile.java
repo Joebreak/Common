@@ -12,6 +12,7 @@ public class DaoFile implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final Map<Integer, Object> dataMap = new HashMap<>();
+    private int index;
 
     public void put(int value) {
         int maxIndex = getMaxIndex();
@@ -33,7 +34,11 @@ public class DaoFile implements Serializable {
         dataMap.put(maxIndex + 1, value);
     }
 
-    private int getMaxIndex() {
+    public void put(String value, int index) {
+        dataMap.put(index, value);
+    }
+
+    public int getMaxIndex() {
         Optional<Integer> optional = dataMap.keySet().stream().sorted(Comparator.reverseOrder()).findFirst();
         if (!optional.isPresent()) {
             return -1;
@@ -47,7 +52,15 @@ public class DaoFile implements Serializable {
 
     @Override
     public String toString() {
-        return "DaoFile" + dataMap;
+        return "DaoFile:" + index + ":" + dataMap;
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 
 }
