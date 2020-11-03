@@ -27,6 +27,16 @@ public class VideoTool {
         return JSONTool.readJSON(message, VideoData.class);
     }
 
+    public static String getDuration(Path source) {
+        if (!Files.exists(source)) {
+            return null;
+        }
+        String code = String.format("%s -show_entries format=duration -v quiet -of csv=\"p=0\" %s", ffprobePath, source);
+
+        System.out.println(code);
+        return CommandTools.execute(code);
+    }
+
     public static VideoData getVideoDate(Path source) {
         return getVideoDate(source, false);
     }
