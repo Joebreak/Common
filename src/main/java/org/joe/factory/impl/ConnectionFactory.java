@@ -13,13 +13,8 @@ import java.net.URLConnection;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 public class ConnectionFactory {
 
-    private static final Logger logger = LogManager
-            .getLogger(ConnectionFactory.class);
     private boolean proxy;
 
     public ConnectionFactory() {
@@ -71,7 +66,7 @@ public class ConnectionFactory {
             }
             return sb.toString();
         } catch (Exception ex) {
-            logger.error("connect error : {}", ex.getMessage());
+            System.out.println("connect error : "+ ex.getMessage());
         }
         return "";
     }

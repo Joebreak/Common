@@ -12,7 +12,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.springframework.core.io.ClassPathResource;
 
 public class FileTool {
@@ -113,7 +112,7 @@ public class FileTool {
 
     public static void delete(Path path) {
         try {
-            FileUtils.deleteDirectory(path.toFile());
+            Files.delete(path);
         } catch (Exception ex) {
         }
     }
