@@ -45,12 +45,9 @@ public class ExcelDAOImpl implements DAOObject {
     }
 
     public ExcelDAOImpl(Path path) {
-        if (Files.exists(path)) {
-            this.path = path;
-        } else {
+        this.path = path;
+        if (!Files.exists(path)) {
             creadFile();
-            String rootPath = Paths.get(System.getProperty("user.dir")).getRoot().toString();
-            this.path = Paths.get(rootPath, "db", "sys_data.xls");
         }
 
         this.workbook = readWorkbookFromExcel();
