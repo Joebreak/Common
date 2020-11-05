@@ -12,8 +12,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.core.io.ClassPathResource;
-
 public class FileTool {
 
     public static String getFileExtension(String path) {
@@ -85,14 +83,6 @@ public class FileTool {
             e.printStackTrace();
         }
         return contents;
-    }
-
-    public static Path getPathResource(String path) {
-        try {
-            return Paths.get(new ClassPathResource(path).getURI());
-        } catch (Exception e) {
-        }
-        return null;
     }
 
     public static Path createTempDirectory(String folderName) {
