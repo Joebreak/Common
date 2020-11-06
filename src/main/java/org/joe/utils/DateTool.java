@@ -9,7 +9,11 @@ public class DateTool {
     public static Date getCurrentDate() {
         return Calendar.getInstance().getTime();
     }
-    
+
+    public static long getCurrentTime() {
+        return Calendar.getInstance().getTime().getTime();
+    }
+
     public static String toFormat(String pattern, Date date) {
         if (date == null || pattern == null) {
             return null;
@@ -22,7 +26,7 @@ public class DateTool {
         }
         return null;
     }
-    
+
     public static Date toFormatDate(String pattern, String input) {
         if (input == null || pattern == null) {
             return null;

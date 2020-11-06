@@ -9,6 +9,7 @@ import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,8 +56,7 @@ public class FileTool {
     }
 
     public void saveText(Path path, List<String> strings) {
-        try (FileWriter fw = new FileWriter(path.toFile());
-                PrintWriter outs = new PrintWriter(fw);) {
+        try (FileWriter fw = new FileWriter(path.toFile()); PrintWriter outs = new PrintWriter(fw);) {
             for (String string : strings) {
                 outs.print(string + ";");
             }
@@ -70,8 +70,7 @@ public class FileTool {
             creadFile(path);
         }
         List<String> contents = new ArrayList<>();
-        try (FileReader fw = new FileReader(path.toFile());
-                BufferedReader in = new BufferedReader(fw);) {
+        try (FileReader fw = new FileReader(path.toFile()); BufferedReader in = new BufferedReader(fw);) {
             String s[], outstring;
             if ((outstring = in.readLine()) != null) {
                 s = outstring.split(";");
@@ -113,6 +112,32 @@ public class FileTool {
         } catch (IOException ioe) {
         }
         return null;
+    }
+
+    public static String getSHA256(Path path) {
+        if (!Files.exists(path)) {
+            return null;
+        } 
+        try {
+            byte[] b = Files.readAllBytes(path);
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+            messageDigest.update(b);
+            return byte2Hex(messageDigest.digest());
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+    private static String byte2Hex(byte[] bytes) {
+        StringBuffer stringBuffer = new StringBuffer();
+        for (int i = 0; i < bytes.length; i++) {
+            String temp = Integer.toHexString(bytes[i] & 0xFF);
+            if (temp.length() == 1) {
+                stringBuffer.append("0");
+            }
+            stringBuffer.append(temp);
+        }
+        return stringBuffer.toString();
     }
 
 }

@@ -41,10 +41,9 @@ configurations {
 dependencies {
 	compile (
 	    //jackson
-		'com.fasterxml.jackson.core:jackson-databind:2.11.3',
+		'com.fasterxml.jackson.core:jackson-databind:2.9.10.6',
 		//aspose
         'com.aspose:aspose-words:17.12:jdk16',
-        'com.aspose:aspose-slides:17.12.1:jdk16',
 		// apache poi for excel, word documents
 		'org.apache.poi:poi-ooxml:4.0.1'
 	)
