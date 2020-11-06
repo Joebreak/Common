@@ -60,7 +60,7 @@ public class UploadLib {
             name = String.format("metadata_%s_%03d.jar", args, index++);
         }
         if (crateFile(name, jarPath, blockId)) {
-            System.out.println("done");
+            System.out.println("create jar done");
         }
     }
 
@@ -96,7 +96,7 @@ public class UploadLib {
         String url = String.format("%s/upload/file/%s", BOX_DOMIN, blockId);
 
         String response = connectionFactory.sendPostRequestAsEntity(url, getHeaders(), path);
-        return response.isEmpty();
+        return response == null;
     }
 
     public static boolean crateFile(String name, Path path, String blockId) throws IOException {
@@ -112,7 +112,6 @@ public class UploadLib {
         request.setBlockId(blockId);
 
         String response = connectionFactory.sendPostRequestAsEntity(url, getHeaders(), JSONTool.writeJSON(request));
-        System.out.println(response);
 
         return !StringTool.isNullOrEmpty(response);
     }
