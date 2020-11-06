@@ -1,5 +1,6 @@
 package org.joe.factory.impl;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
@@ -80,7 +81,7 @@ public class ConnectionFactory {
         }
         return null;
     }
-    
+
     public String sendPostRequestAsEntity(String url, Map<String, String> headersMap, Path pathBody) {
 
         try {
@@ -148,34 +149,24 @@ public class ConnectionFactory {
         return null;
     }
 
-    // HTTP GET request
-    public void sendGet() throws Exception {
+    public BufferedInputStream sendGetRequestToInputStream(String url, Map<String, String> headers) {
 
-        String url = "http://festive-cistern-197604.appspot.com/api/LineChat/TLJS";
+        try {
+            HttpURLConnection connection = getConnection(url);
 
-        HttpURLConnection connection = getConnection(url);
+            addHeaders(connection, headers);
+            // optional default is GET
+            connection.setRequestMethod("GET");
 
-        // optional default is GET
-        connection.setRequestMethod("GET");
+            int responseCode = connection.getResponseCode();
 
-        // add request header
-        // con.setRequestProperty("User-Agent", USER_AGENT);
+            if (responseCode != 200) {
+                return null;
+            }
 
-        int responseCode = connection.getResponseCode();
-        System.out.println("Sending 'GET' request to URL : " + url);
-        System.out.println("Response Code : " + responseCode);
-
-        BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-        String inputLine;
-        StringBuffer response = new StringBuffer();
-
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
+            return new BufferedInputStream(connection.getInputStream());
+        } catch (Exception e) {
         }
-        in.close();
-
-        // print result
-        System.out.println(response.toString());
-
+        return null;
     }
 }
