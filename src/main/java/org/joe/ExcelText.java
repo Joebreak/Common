@@ -18,7 +18,14 @@ public class ExcelText {
         }
         if (!Files.exists(path)) {
             String parent = Paths.get(System.getProperty("user.dir")).getRoot().toString();
-            path = Paths.get(parent, "data.xlsx");
+            path = Paths.get(parent, "data.xls");
+            if (!Files.exists(path)) {
+                path = Paths.get(parent, "data.xlsx");
+            }
+        }
+        if (!Files.exists(path)) {
+            System.out.println("excel data not found!");
+            return;
         }
         ExcelDAOImpl dao = new ExcelDAOImpl(path);
         showCmd();
