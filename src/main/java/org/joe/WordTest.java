@@ -19,10 +19,13 @@ public class WordTest {
         }
         if (!Files.exists(path)) {
             String parent = Paths.get(System.getProperty("user.dir")).getRoot().toString();
-            path = Paths.get(parent, "data.docx");
+            path = Paths.get(parent, "data.doc");
+            if (!Files.exists(path)) {
+                path = Paths.get(parent, "data.docx");
+            }
         }
         if (!Files.exists(path)) {
-            System.out.println("data.docx not found!");
+            System.out.println("word data not found!");
             return;
         }
         LicenseTools.loadAllLicenses();
