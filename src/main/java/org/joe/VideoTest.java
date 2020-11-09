@@ -1,14 +1,13 @@
 package org.joe;
 
 import java.io.IOException;
+import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Scanner;
 
-import org.apache.xmlbeans.impl.xb.xmlconfig.NamespaceList.Member2.Item;
-import org.joe.factory.impl.ConnectionFactory;
 import org.joe.utils.FileTool;
 import org.joe.utils.VideoTool;
 import org.joe.utils.YTDownload;
@@ -50,14 +49,15 @@ public class VideoTest {
             return;
         }
         String parentPath = Paths.get(path.toString(), "music").toString();
-        try {
-            Files.list(path)
-                    .filter(item -> !Files.isDirectory(item)
-                            && !"bat".equalsIgnoreCase(FileTool.getFileExtension(item.getFileName().toString())))
-                    .forEach(item -> {
-                        Path file = Paths.get(parentPath, FileTool.getBaseFileName(item.getFileName().toString()) + ".mp3");
-                        VideoTool.maskVideo(item, file);
-                    });
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
+            for (Path item : stream) {
+                if (Files.isDirectory(item)
+                        || !"bat".equalsIgnoreCase(FileTool.getFileExtension(item.getFileName().toString()))) {
+                    continue;
+                }
+                Path file = Paths.get(parentPath, FileTool.getBaseFileName(item.getFileName().toString()) + ".mp3");
+                VideoTool.maskVideo(item, file); 
+            }
         } catch (IOException e) {
         }
     }
