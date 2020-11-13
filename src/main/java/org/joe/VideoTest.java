@@ -15,23 +15,35 @@ import org.joe.utils.YTDownload;
 public class VideoTest {
 
     public static void main(String[] args) {
-//        downloadYT();
+        Path parentPath = Paths.get("E:\\joe\\metadata");
+        Path folderPath = null;
+        Path filePath = null;
+        Path filePath1 = null;
+        downloadYT();
 
-        toMp3(Paths.get("E:\\joe\\metadata"));
+//        toMp3(parentPath);
 
-//        VideoTool.getVideoDate(Paths.get("E:\\joe\\metadata\\3.mkv"), true);
+//        filePath = Paths.get(parentPath.toString(), "3.mkv");
+//        VideoTool.getVideoDate(filePath, true);
 
-//        System.out.println(VideoTool.getDuration(Paths.get("E:\\joe\\metadata\\3.mkv")));
+//        filePath = Paths.get(parentPath.toString(), "3.mkv");
+//        System.out.println(VideoTool.getDuration(filePath));
 
-//        VideoTool.getImages(Paths.get("E:\\joe\\metadata\\1.rmvb"), "", "1", "30", Paths.get("E:\\joe\\metadata\\123\\"));
+//        filePath = Paths.get(parentPath.toString(), "1.rmvb");
+//        folderPath = Paths.get(parentPath.toString(), "123");
+//        VideoTool.getImages(filePath, "", "1", "30", folderPath);
 
-//        VideoTool.getGif(Paths.get("E:\\joe\\metadata\\out1027.mp4"), null, "10", "30", Paths.get("E:\\joe\\metadata\\123\\"));
+//        filePath = Paths.get(parentPath.toString(), "out1027.mp4");
+//        folderPath = Paths.get(parentPath.toString(), "123");
+//        VideoTool.getGif(filePath, null, "10", "30", folderPath);
 
-//        VideoTool.convertToMp4(Paths.get("E:\\joe\\metadata\\out1027.rmvb"),
-//                Paths.get("E:\\joe\\metadata\\out1027.mp4"));
+//        filePath = Paths.get(parentPath.toString(), "out1027.rmvb");
+//        filePath1 = Paths.get(parentPath.toString(), "out1027.mp4");
+//        VideoTool.convertToMp4(filePath, filePath1);
 
-//        VideoTool.mergeVideo(Arrays.asList(Paths.get("E:\\joe\\movid\\1.mp4"), Paths.get("E:\\joe\\movid\\2.mp4")),
-//                Paths.get("E:\\joe\\movid\\out1021.mp4"), null);
+//        filePath = Paths.get(parentPath.toString(), "1.mp4");
+//        filePath1 = Paths.get(parentPath.toString(), "2.mp4");
+//        VideoTool.mergeVideo(Arrays.asList(filePath, filePath1), Paths.get(parentPath.toString(), "out1021.mp4"), null);
     }
 
     public static void downloadYT() {
@@ -56,7 +68,7 @@ public class VideoTest {
                     continue;
                 }
                 Path file = Paths.get(parentPath, FileTool.getBaseFileName(item.getFileName().toString()) + ".mp3");
-                VideoTool.maskVideo(item, file); 
+                VideoTool.maskVideo(item, file);
             }
         } catch (IOException e) {
         }

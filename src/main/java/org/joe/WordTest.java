@@ -35,7 +35,7 @@ public class WordTest {
         ImageSaveOptions saveOptions = new ImageSaveOptions(SaveFormat.PNG);
         for (int i = 0; i < doc.getPageCount(); i++) {
             saveOptions.setPageIndex(i);
-            String fileName = String.format("%s.png", i+1);
+            String fileName = String.format("%s.png", i + 1);
             doc.save(Files.newOutputStream(Paths.get(parentPath, fileName)), saveOptions);
         }
     }
