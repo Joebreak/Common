@@ -15,11 +15,11 @@ import org.joe.utils.YTDownload;
 public class VideoTest {
 
     public static void main(String[] args) {
-        Path parentPath = Paths.get("E:\\joe\\metadata");
+        Path parentPath = Paths.get("D:\\joe\\movid");
         Path folderPath = null;
         Path filePath = null;
         Path filePath1 = null;
-        downloadYT();
+//        downloadYT();
 
 //        toMp3(parentPath);
 
@@ -41,9 +41,18 @@ public class VideoTest {
 //        filePath1 = Paths.get(parentPath.toString(), "out1027.mp4");
 //        VideoTool.convertToMp4(filePath, filePath1);
 
-//        filePath = Paths.get(parentPath.toString(), "1.mp4");
-//        filePath1 = Paths.get(parentPath.toString(), "2.mp4");
-//        VideoTool.mergeVideo(Arrays.asList(filePath, filePath1), Paths.get(parentPath.toString(), "out1021.mp4"), null);
+//        filePath = Paths.get(parentPath.toString(), "data1.mp4");
+//        filePath1 = Paths.get(parentPath.toString(), "music.mp3");
+//        VideoTool.maskVideo(filePath, filePath1);
+
+        filePath = Paths.get(parentPath.toString(), "movid.mp4");
+        filePath1 = Paths.get(parentPath.toString(), "music.mp3");
+        VideoTool.mergeVideoAudio(filePath, filePath1, "16:40", "10:00");
+
+//        filePath = Paths.get(parentPath.toString(), "movid.mp4");
+//        filePath1 = Paths.get(parentPath.toString(), "music.mp3");
+//        VideoTool.mergeVideo(Arrays.asList(filePath, filePath1),
+//                Paths.get(parentPath.toString(), "out1114.mp4"), null);
     }
 
     public static void downloadYT() {
@@ -63,11 +72,12 @@ public class VideoTest {
         String parentPath = Paths.get(path.toString(), "music").toString();
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(path)) {
             for (Path item : stream) {
-                if (Files.isDirectory(item)
-                        || !"bat".equalsIgnoreCase(FileTool.getFileExtension(item.getFileName().toString()))) {
+                if (Files.isDirectory(item) || !"bat".equalsIgnoreCase(
+                        FileTool.getFileExtension(item.getFileName().toString()))) {
                     continue;
                 }
-                Path file = Paths.get(parentPath, FileTool.getBaseFileName(item.getFileName().toString()) + ".mp3");
+                Path file = Paths.get(parentPath,
+                        FileTool.getBaseFileName(item.getFileName().toString()) + ".mp3");
                 VideoTool.maskVideo(item, file);
             }
         } catch (IOException e) {
