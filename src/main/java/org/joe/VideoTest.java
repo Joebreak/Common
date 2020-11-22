@@ -23,8 +23,8 @@ public class VideoTest {
 
 //        toMp3(parentPath);
 
-//        filePath = Paths.get(parentPath.toString(), "3.mkv");
-//        VideoTool.getVideoDate(filePath, true);
+        filePath = Paths.get(parentPath.toString(), "data.mkv");
+        VideoTool.getVideoDate(filePath, true);
 
 //        filePath = Paths.get(parentPath.toString(), "3.mkv");
 //        System.out.println(VideoTool.getDuration(filePath));
@@ -45,9 +45,9 @@ public class VideoTest {
 //        filePath1 = Paths.get(parentPath.toString(), "music.mp3");
 //        VideoTool.maskVideo(filePath, filePath1);
 
-        filePath = Paths.get(parentPath.toString(), "movid.mp4");
-        filePath1 = Paths.get(parentPath.toString(), "music.mp3");
-        VideoTool.mergeVideoAudio(filePath, filePath1, "16:40", "10:00");
+//        filePath = Paths.get(parentPath.toString(), "movid.mp4");
+//        filePath1 = Paths.get(parentPath.toString(), "music.mp3");
+//        VideoTool.mergeVideoAudio(filePath, filePath1, "01:17:05", "10:00");
 
 //        filePath = Paths.get(parentPath.toString(), "movid.mp4");
 //        filePath1 = Paths.get(parentPath.toString(), "music.mp3");
