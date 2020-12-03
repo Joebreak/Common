@@ -43,7 +43,8 @@ dependencies {
 	    //jackson
 		'com.fasterxml.jackson.core:jackson-databind:2.9.10.6',
 		//aspose
-        'com.aspose:aspose-words:17.12:jdk16',
+        'com.aspose:aspose-words:19.12:jdk16',
+        'com.aspose:aspose-cells:20.11',
 		// apache poi for excel, word documents
 		'org.apache.poi:poi-ooxml:4.0.1'
 	)
